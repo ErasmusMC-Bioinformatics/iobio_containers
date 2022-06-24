@@ -1,0 +1,6 @@
+[submodule "clin"]
+	path = clin
+	url = git@github.com:iobio/clin.iobio.git
+[submodule "gene"]
+	path = gene
+	url = git@github.com:iobio/gene.iobio.git
