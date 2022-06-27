@@ -13,8 +13,7 @@ jobs:
       -
         name: Reconfigure git to use HTTP authentication
         run: |
-          git config --global url."https://github.com/".insteadOf
-          ssh://git@github.com/
+          git config --global url."https://github.com/".insteadOf ssh://git@github.com/
       -
         name: Set environment variables
         run: |
