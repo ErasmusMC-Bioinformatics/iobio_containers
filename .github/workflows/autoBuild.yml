@@ -5,21 +5,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       -
-        name: Checkout repository ( + submodules)
-        uses: actions/checkout@v3
-        with:
-          persist-credentials: false
-          submodules: 'true'
-      -
-        name: Reconfigure git to use HTTP authentication
-        run: |
-          git config --global url."https://github.com/".insteadOf ssh://git@github.com/
-      -
         name: Set environment variables
         run: |
           # Short name for current branch. For PRs, use target branch (base ref)
           GIT_BRANCH=${GITHUB_BASE_REF:-${GITHUB_REF#refs/heads/}}
           echo "GIT_BRANCH=$GIT_BRANCH" >> $GITHUB_ENV
+      -
+        name: Checkout repository ( + submodules)
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+          submodules: 'true'
       -
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2

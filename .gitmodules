@@ -1,6 +1,8 @@
 [submodule "clin"]
 	path = clin.iobio
-	url = git@github.com:iobio/clin.iobio.git
+	url = https://github.com/iobio/clin.iobio.git
+	# url = git@github.com:iobio/clin.iobio.git
 [submodule "gene"]
 	path = gene.iobio
-	url = git@github.com:iobio/gene.iobio.git
+	url = https://github.com/iobio/gene.iobio.git
+	# url = git@github.com:iobio/gene.iobio.git
