@@ -5,6 +5,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       -
+        name: Fix git URLs
+        run: echo -e '[url "https://github.com/"]\n insteadOf = "git@github.com:"' >> ~/.gitconfig
+      -
         name: Set environment variables
         run: |
           # Short name for current branch. For PRs, use target branch (base ref)
