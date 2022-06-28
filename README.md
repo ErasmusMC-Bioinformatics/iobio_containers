@@ -1,0 +1,24 @@
+# IOBIO Container
+
+> **Note:** the apps are using the [iobio backend](https://github.com/iobio/iobio-gru-backend), which is hosted online by iobio. It is **NOT** included in the docker.
+
+[![dockerbuild:main](https://img.shields.io/github/workflow/status/WhoisDonlee/iobio_containers/Docker%20build%20&%20push%20iobio%20container/main?label=%20build%3Amain&logo=docker)](https://hub.docker.com/r/whoisdonlee/iobio_containers)
+[![dockerbuild:dev](https://img.shields.io/github/workflow/status/WhoisDonlee/iobio_containers/Docker%20build%20&%20push%20iobio%20container/dev?label=%20build%3Adev&logo=docker)](https://hub.docker.com/r/whoisdonlee/iobio_containers)
+
+This repository contains [clin.iobio](https://github.com/iobio/clin.iobio) and [gene.iobio](https://github.com/iobio/gene.iobio). 
+
+## Quickstart
+
+Pull the container by running:
+``` shell
+docker pull whoisdonlee/iobio_container:main
+```
+
+To run the applications run:
+
+``` shell
+docker container run -p 4026:4026 -p 4030:4030 whoisdonlee/iobiocontainer:main
+```
+
+
+
