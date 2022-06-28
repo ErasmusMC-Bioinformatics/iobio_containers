@@ -1,5 +1,7 @@
-name: Docker build - dev
-on: push
+name: Docker build & push iobio container
+on:
+  push:
+    branch: [ main, dev ]
 jobs:
   build:
     runs-on: ubuntu-latest
