@@ -8,7 +8,7 @@ jobs:
       -
         name: Branch Name
         run: |
-          echo ${ github.ref_name }
+          echo ${{ github.ref_name }}
           echo $GITHUB_REF_NAME
           echo ${{ env.GITHUB_REF_NAME }}
       -
