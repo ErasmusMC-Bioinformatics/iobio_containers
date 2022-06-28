@@ -1,4 +1,4 @@
-name: Docker build (native)
+name: Docker build - dev
 on: push
 jobs:
   build:
@@ -6,12 +6,11 @@ jobs:
     environment: dev
     steps:
       -
-        name: Set environment variables
+        name: Branch Name
         run: |
-          # Short name for current branch. For PRs, use target branch (base ref)
-          # GIT_BRANCH=${GITHUB_BASE_REF:-${GITHUB_REF#refs/heads/}}
-          # echo "GIT_BRANCH=$GIT_BRANCH" >> $GITHUB_ENV
-          echo "BRANCH=${GITHUB_REF##*/}" >> $GITHUB_ENV
+          echo ${ github.ref_name }
+          echo $GITHUB_REF_NAME
+          echo ${{ env.GITHUB_REF_NAME }}
       -
         name: Checkout repository ( + submodules)
         uses: actions/checkout@v3
@@ -34,4 +33,4 @@ jobs:
           context: ./
           file: ./Dockerfile
           push: true
-          tags: whoisonlee/iobio_container:${{ github.ref_name }}
+          tags: whoisonlee/iobio_container:dev
