@@ -34,4 +34,4 @@ jobs:
           context: ./
           file: ./Dockerfile
           push: true
-          tags: whoisonlee/iobio_container:${{ env.GITHUB_REF_NAME }}
+          tags: whoisonlee/iobio_container:$GITHUB_REF_NAME
