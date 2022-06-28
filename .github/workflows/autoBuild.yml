@@ -34,6 +34,4 @@ jobs:
           context: ./
           file: ./Dockerfile
           push: true
-          tags: whoisonlee/iobio_container:${{ env.BRANCH }}
-          build-args: |
-            BRANCH=${{ env.BRANCH }}
+          tags: whoisonlee/iobio_container:${{ GITHUB_REF_NAME }}
