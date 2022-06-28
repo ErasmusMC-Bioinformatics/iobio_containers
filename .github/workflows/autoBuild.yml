@@ -6,12 +6,6 @@ jobs:
     environment: dev
     steps:
       -
-        name: Branch Name
-        run: |
-          echo ${{ github.ref_name }}
-          echo $GITHUB_REF_NAME
-          echo ${{ env.GITHUB_REF_NAME }}
-      -
         name: Checkout repository ( + submodules)
         uses: actions/checkout@v3
         with:
@@ -33,4 +27,4 @@ jobs:
           context: ./
           file: ./Dockerfile
           push: true
-          tags: whoisonlee/iobio_container:dev
+          tags: whoisdonlee/iobio_container:${{ github.ref_name }}
