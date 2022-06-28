@@ -8,13 +8,13 @@ jobs:
         name: Set environment variables
         run: |
           # Short name for current branch. For PRs, use target branch (base ref)
-          GIT_BRANCH=${GITHUB_BASE_REF:-${GITHUB_REF#refs/heads/}}
-          echo "GIT_BRANCH=$GIT_BRANCH" >> $GITHUB_ENV
+          # GIT_BRANCH=${GITHUB_BASE_REF:-${GITHUB_REF#refs/heads/}}
+          # echo "GIT_BRANCH=$GIT_BRANCH" >> $GITHUB_ENV
+          echo "BRANCH=${GITHUB_REF##*/}" >> $GITHUB_ENV
       -
         name: Checkout repository ( + submodules)
         uses: actions/checkout@v3
         with:
-          persist-credentials: false
           submodules: 'true'
       -
         name: Set up Docker Buildx
@@ -31,4 +31,6 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: whoisonlee/iobio_container:${{ env.GIT_BRANCH }}
+          tags: whoisonlee/iobio_container:${{ env.BRANCH }}
+          build-args: |
+            BRANCH=${{ env.BRANCH }}
