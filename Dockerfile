@@ -6,8 +6,11 @@ COPY gene.iobio/package*.json ./gene.iobio/
 COPY clin.iobio/package*.json ./clin.iobio/
 
 RUN cd ./clin.iobio \
+    && npm i --package-lock-only \
     && npm ci \
-    && cd ../gene.iobio \
+    && cd /app
+RUN cd ./gene.iobio \
+    && npm i --package-lock-only \
     && npm ci \
     && cd /app
 
