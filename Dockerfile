@@ -2,8 +2,8 @@ FROM node:13 as build
     MAINTAINER Dennis Dollée
 
 WORKDIR /app
-COPY gene.iobio/package*.json ./gene.iobio/
-COPY clin.iobio/package*.json ./clin.iobio/
+COPY gene.iobio/ ./gene.iobio/
+COPY clin.iobio/ ./clin.iobio/
 
 RUN cd ./clin.iobio \
     && npm i --package-lock-only \
@@ -13,8 +13,6 @@ RUN cd ./gene.iobio \
     && npm i --package-lock-only \
     && npm ci \
     && cd /app
-
-COPY . .
 
 RUN cd /app/gene.iobio && bash build.sh prod && \
     cd /app/clin.iobio && npm run build
@@ -26,8 +24,14 @@ RUN rm /app/gene.iobio/deploy/index.html && cp -f -r /app/gene.iobio/server/view
     rm /app/gene.iobio/deploy/dist/build.js && cp -f -r /app/gene.iobio/client/dist/build.js /app/gene.iobio/deploy/dist/build.js && \
     rm /app/gene.iobio/deploy/dist/build.js.map && cp -f -r /app/gene.iobio/client/dist/build.js.map /app/gene.iobio/deploy/dist/build.js.map
 
+
 FROM nginx:alpine as production
 COPY --from=build /app/gene.iobio/deploy /usr/share/nginx/html/gene
 COPY --from=build /app/clin.iobio/dist /usr/share/nginx/html/clin
-COPY --from=build /app/default.conf /etc/nginx/conf.d/
+COPY default.conf /etc/nginx/conf.d/
+
+
+RUN sed -i 's|http://localhost:4026|https://gene.iobio.io|g' /usr/share/nginx/html/clin/js/app.*.js
+
+
 CMD ["nginx", "-g", "daemon off;"]
