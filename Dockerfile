@@ -2,8 +2,8 @@ FROM node:13-alpine as build
 MAINTAINER Dennis Dollée
 
 WORKDIR /app
-COPY gene.iobio/package*.json ./gene.iobio/
-COPY clin.iobio/package*.json ./clin.iobio/
+COPY gene.iobio/ ./gene.iobio/
+COPY clin.iobio/ ./clin.iobio/
 
 
 RUN set -eux; apk add --no-cache curl bash;
@@ -14,16 +14,6 @@ RUN cd ./clin.iobio \
 RUN cd ./gene.iobio \
     && npm install \
     && cd /app
-
-COPY . .
-
-#RUN sed -i "s|http://localhost:4026|http://'+window.location.hostname+'/gene|g" ./clin.iobio/src/components/pages/ClinHome.vue && ls ./clin.iobio/ && cat ./clin.iobio/src/components/pages/ClinHome.vue | grep 4026
-
-#RUN sed -i "s|http://localhost:4026|http://'+window.location.hostname+':4002|g" ./clin.iobio/src/components/pages/ClinHome.vue && sed -i "s|frame_source=' + window.document.URL|frame_source=' + window.location.hostname + ':4002' + window.location.search|g" ./clin.iobio/src/components/pages/ClinHome.vue && ls ./clin.iobio/ && cat ./clin.iobio/src/components/pages/ClinHome.vue | grep frame_source
-RUN sed -i "s|http://localhost:4026|http://\"+window.location.hostname+\":4002|g" ./clin.iobio/src/components/pages/ClinHome.vue && ls ./clin.iobio/ && cat ./clin.iobio/src/components/pages/ClinHome.vue | grep frame_source
-
-
-RUN sed -i "s|https://clin.iobio.io|http://\"+window.location.hostname+\":4002|g" ./gene.iobio/client/app/components/pages/GeneHome.vue
 
 RUN cd /app/gene.iobio && bash build.sh prod && \
     cd /app/clin.iobio && npm run build
@@ -49,6 +39,12 @@ RUN ls /app/clin.iobio/dist/ && ls /app/clin.iobio/dist/js/
 #RUN cp -Rv /app/gene.iobio/deploy/data/ /app/clin.iobio/dist/
 
 
+#RUN sed -i "s|http://localhost:4026|http://'+window.location.hostname+'/gene|g" ./clin.iobio/src/components/pages/ClinHome.vue && ls ./clin.iobio/ && cat ./clin.iobio/src/components/pages/ClinHome.vue | grep 4026
+
+#RUN sed -i "s|http://localhost:4026|http://'+window.location.hostname+':4002|g" ./clin.iobio/src/components/pages/ClinHome.vue && sed -i "s|frame_source=' + window.document.URL|frame_source=' + window.location.hostname + ':4002' + window.location.search|g" ./clin.iobio/src/components/pages/ClinHome.vue && ls ./clin.iobio/ && cat ./clin.iobio/src/components/pages/ClinHome.vue | grep frame_source
+#RUN sed -i "s|http://localhost:4026|http://\"+window.location.hostname+\":4002|g" ./clin.iobio/src/components/pages/ClinHome.vue && ls ./clin.iobio/ && cat ./clin.iobio/src/components/pages/ClinHome.vue | grep frame_source
+#RUN sed -i "s|https://clin.iobio.io|http://\"+window.location.hostname+\":4002|g" ./gene.iobio/client/app/components/pages/GeneHome.vue
+
 
 FROM nginx:alpine as production
 COPY --from=build /app/gene.iobio/deploy /usr/share/nginx/html/gene
@@ -62,5 +58,10 @@ RUN cp -Rfnv /usr/share/nginx/html/clin/* /usr/share/nginx/html/
 
 COPY --from=build /app/default.conf /etc/nginx/conf.d/
 
-EXPOSE 4026 4030
+EXPOSE 4030
+COPY default.conf /etc/nginx/conf.d/
+
+
+RUN sed -i 's|http://localhost:4026|https://gene.iobio.io|g' /usr/share/nginx/html/clin/js/app.*.js
+
 CMD ["nginx", "-g", "daemon off;"]
