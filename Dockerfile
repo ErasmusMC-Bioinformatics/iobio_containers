@@ -20,10 +20,10 @@ COPY . .
 #RUN sed -i "s|http://localhost:4026|http://'+window.location.hostname+'/gene|g" ./clin.iobio/src/components/pages/ClinHome.vue && ls ./clin.iobio/ && cat ./clin.iobio/src/components/pages/ClinHome.vue | grep 4026
 
 #RUN sed -i "s|http://localhost:4026|http://'+window.location.hostname+':4002|g" ./clin.iobio/src/components/pages/ClinHome.vue && sed -i "s|frame_source=' + window.document.URL|frame_source=' + window.location.hostname + ':4002' + window.location.search|g" ./clin.iobio/src/components/pages/ClinHome.vue && ls ./clin.iobio/ && cat ./clin.iobio/src/components/pages/ClinHome.vue | grep frame_source
-RUN sed -i "s|http://localhost:4026|http://'+window.location.hostname+':4002|g" ./clin.iobio/src/components/pages/ClinHome.vue && ls ./clin.iobio/ && cat ./clin.iobio/src/components/pages/ClinHome.vue | grep frame_source
+RUN sed -i "s|http://localhost:4026|http://\"+window.location.hostname+\":4002|g" ./clin.iobio/src/components/pages/ClinHome.vue && ls ./clin.iobio/ && cat ./clin.iobio/src/components/pages/ClinHome.vue | grep frame_source
 
 
-#RUN sed -i "s|https://clin.iobio.io||g" ./gee.iobio/client/app/components/pages/GeneHome.vue
+RUN sed -i "s|https://clin.iobio.io|http://\"+window.location.hostname+\":4002|g" ./gene.iobio/client/app/components/pages/GeneHome.vue
 
 RUN cd /app/gene.iobio && bash build.sh prod && \
     cd /app/clin.iobio && npm run build
