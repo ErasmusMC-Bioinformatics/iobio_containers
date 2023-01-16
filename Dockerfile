@@ -2,8 +2,8 @@ FROM node:13-alpine as build
 MAINTAINER Dennis Dollée
 
 WORKDIR /app
-COPY gene.iobio/ ./gene.iobio/
-COPY clin.iobio/ ./clin.iobio/
+#COPY gene.iobio/ ./gene.iobio/
+COPY clin-code/ ./clin.iobio/
 
 
 RUN set -eux; apk add --no-cache curl bash;
@@ -11,21 +11,21 @@ RUN set -eux; apk add --no-cache curl bash;
 RUN cd ./clin.iobio \
     && npm install \
     && cd /app
-RUN cd ./gene.iobio \
-    && npm install \
-    && cd /app
+#RUN cd ./gene.iobio \
+#    && npm install \
+#    && cd /app
 
-RUN cd /app/gene.iobio && bash build.sh prod && \
-    cd /app/clin.iobio && npm run build
-RUN rm /app/gene.iobio/deploy/index.html && cp -f -r /app/gene.iobio/server/views/index.html /app/gene.iobio/deploy/index.html && \
-    rm /app/gene.iobio/deploy/data && cp -f -r /app/gene.iobio/client/data /app/gene.iobio/deploy/data && \
-    rm /app/gene.iobio/deploy/assets && cp -f -r /app/gene.iobio/client/assets /app/gene.iobio/deploy/assets && \
-    rm /app/gene.iobio/deploy/js/thirdparty && cp -f -r /app/gene.iobio/client/js/thirdparty /app/gene.iobio/deploy/js/thirdparty && \
-    rm /app/gene.iobio/deploy/app/third-party && cp -f -r /app/gene.iobio/client/app/third-party /app/gene.iobio/deploy/app/third-party && \
-    rm /app/gene.iobio/deploy/dist/build.js && cp -f -r /app/gene.iobio/client/dist/build.js /app/gene.iobio/deploy/dist/build.js && \
-    rm /app/gene.iobio/deploy/dist/build.js.map && cp -f -r /app/gene.iobio/client/dist/build.js.map /app/gene.iobio/deploy/dist/build.js.map
+#RUN cd /app/gene.iobio && bash build.sh prod && \
+RUN cd /app/clin.iobio && npm run build
+#RUN rm /app/gene.iobio/deploy/index.html && cp -f -r /app/gene.iobio/server/views/index.html /app/gene.iobio/deploy/index.html && \
+#    rm /app/gene.iobio/deploy/data && cp -f -r /app/gene.iobio/client/data /app/gene.iobio/deploy/data && \
+#    rm /app/gene.iobio/deploy/assets && cp -f -r /app/gene.iobio/client/assets /app/gene.iobio/deploy/assets && \
+#    rm /app/gene.iobio/deploy/js/thirdparty && cp -f -r /app/gene.iobio/client/js/thirdparty /app/gene.iobio/deploy/js/thirdparty && \
+#    rm /app/gene.iobio/deploy/app/third-party && cp -f -r /app/gene.iobio/client/app/third-party /app/gene.iobio/deploy/app/third-party && \
+#    rm /app/gene.iobio/deploy/dist/build.js && cp -f -r /app/gene.iobio/client/dist/build.js /app/gene.iobio/deploy/dist/build.js && \
+#    rm /app/gene.iobio/deploy/dist/build.js.map && cp -f -r /app/gene.iobio/client/dist/build.js.map /app/gene.iobio/deploy/dist/build.js.map
 
-RUN ls /app/gene.iobio/deploy/ && ls /app/gene.iobio/deploy/js/
+#RUN ls /app/gene.iobio/deploy/ && ls /app/gene.iobio/deploy/js/
 RUN ls /app/clin.iobio/dist/ && ls /app/clin.iobio/dist/js/
 
 
@@ -47,21 +47,23 @@ RUN ls /app/clin.iobio/dist/ && ls /app/clin.iobio/dist/js/
 
 
 FROM nginx:alpine as production
-COPY --from=build /app/gene.iobio/deploy /usr/share/nginx/html/gene
-COPY --from=build /app/clin.iobio/dist /usr/share/nginx/html/clin
+#COPY --from=build /app/gene.iobio/deploy /usr/share/nginx/html/gene
+#COPY --from=build /app/clin.iobio/dist /usr/share/nginx/html/clin
 
-COPY --from=build /app/gene.iobio/deploy /usr/share/nginx/html/bak/gene
-COPY --from=build /app/clin.iobio/dist /usr/share/nginx/html/bak/clin
+#COPY --from=build /app/gene.iobio/deploy /usr/share/nginx/html/bak/gene
+#COPY --from=build /app/clin.iobio/dist /usr/share/nginx/html/bak/clin
 
-RUN cp -Rfnv /usr/share/nginx/html/gene/* /usr/share/nginx/html/
-RUN cp -Rfnv /usr/share/nginx/html/clin/* /usr/share/nginx/html/
+#RUN cp -Rfnv /usr/share/nginx/html/gene/* /usr/share/nginx/html/
+#RUN cp -Rfnv /usr/share/nginx/html/clin/* /usr/share/nginx/html/
+COPY --from=build /app/clin.iobio/dist /usr/share/nginx/html
 
-COPY --from=build /app/default.conf /etc/nginx/conf.d/
+#COPY --from=build /app/default.conf /etc/nginx/conf.d/
 
 EXPOSE 4030
 COPY default.conf /etc/nginx/conf.d/
 
 
-RUN sed -i 's|http://localhost:4026|https://gene.iobio.io|g' /usr/share/nginx/html/clin/js/app.*.js
+RUN sed -i 's|http://localhost:4026|http://gene.iobio.io|g' /usr/share/nginx/html/js/app.*.js
 
 CMD ["nginx", "-g", "daemon off;"]
+
