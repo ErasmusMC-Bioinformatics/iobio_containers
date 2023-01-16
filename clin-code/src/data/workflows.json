@@ -1,0 +1,69 @@
+{
+  "workflow.clin.1.0": {
+      "description": "The variant report is used to search for causative variants in a proband, when sequencing data is present for the proband and both parents.  This report is comprised of the following steps:",
+      "id": "2",
+      "name": "variant-analysis",
+      "steps": [
+        {
+          "app": "review-case",
+          "description": "Review case.",
+          "key": "review-case",
+          "number": 1,
+          "summary": "Review case",
+          "tasks": [
+            {
+              "key": "review-patient",
+              "name": "Review relatedness, case description, data quality"
+            }
+          ],
+          "title": "Review case"
+        },
+        {
+          "app": "genepanel",
+          "description": "Generate candidate gene list based on patient's phenotype using commercially available tests and gene-to-phenotype associations.",
+          "key": "phenotypes",
+          "number": 2,
+          "summary": "Generate candidate gene list based on patient's phenotype using commercially available tests and gene-to-phenotype associations.",
+          "tasks": [
+            {
+              "key": "review-phenotypes-genes",
+              "name": "Generate phenotypes and prioritized gene list"
+            }
+          ],
+          "title": "Select phenotypes"
+        },
+        {
+          "app": "genefull",
+          "description": "The GENE.IOBIO app is used to review variants from whole exome/genome variant analysis",
+          "key": "variants-full",
+          "number": 3,
+          "summary": "Review possible causative variants found in whole exome/genome of proband.",
+          "tasks": [
+            {
+              "key": "review-full",
+              "name": "Mark variants as significant, add notes",
+              "tooltip": "After the variants in all genes in the genome/exome are analyzed on the server, the left side panel will show all variants that pass the preset filters.  Click on each variant in the list to examine the variant's annotations.  Upon reviewing the variant, designate the 'interpretation' from the dropdown and provide any additional notes."
+            }
+          ],
+          "title": "Review variants"
+        },
+        {
+          "app": "review-findings",
+          "description": "Review findings",
+          "key": "review-findings",
+          "number": 4,
+          "summary": "Findings",
+          "tasks": [
+            {
+              "key": "review-results",
+              "name": "Review results",
+              "tooltip": "tooltip"
+            }
+          ],
+          "title": "Report findings"
+        }
+      ],
+      "summary": "Review findings. ",
+      "title": "Review findings"
+  }
+}
