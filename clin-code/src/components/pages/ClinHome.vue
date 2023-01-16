@@ -1,5 +1,5 @@
 /*
- * Home.vue -- edited for Galaxy
+ * Home.vue -- edited for Galaxy Interactive Tool
  *
  */
 <style lang="sass"  >
@@ -1558,13 +1558,13 @@ export default {
       let self = this;
 
 
-      /// Do we trust the sender of this message?
-      ///if (!this.isValidAppOrigin(event)) {
-      ///  if (this.paramDebug) {
-      ///    console.log("parentWindow received message frum untrusted sender. Event.origin is " + event.origin );
-      ///  }
-      ///  return;
-      ///}
+      // Do we trust the sender of this message?
+      //if (!this.isValidAppOrigin(event)) {
+      //  if (this.paramDebug) {
+      //    console.log("parentWindow received message frum untrusted sender. Event.origin is " + event.origin );
+      //  }
+      //  return;
+      //}
 
       var messageObject = null;
       try {
